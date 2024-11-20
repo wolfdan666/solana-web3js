@@ -36,7 +36,7 @@ const connection = new Connection("https://api.mainnet-beta.solana.com", "confir
 
 默认情况下，交易CU数量分配为 `200000*指令数量`。
 
-> 注意Compute Budget程序指令不会被计算在此处的指令数量内。
+> 注意若只设置setComputeUnitPrice，此setComputeUnitPrice指令不会被计算在此处的指令数量内。
 
 通过setComputeUnitPrice设置每CU的价格为5 microLamports，可以看到[这条仅包含1个转账指令的交易](https://solscan.io/tx/34eohoyTp2oZ1jtFNtcEUp9oe2QfRf5HRarexCbKnUm93ga3sGjP8Aduwd8xcbRrZk9HNdRJ9rqWZ8peGhruPfuK)优先费用为0.000000001 SOL，即 `200000*1*5 = 1 Lamports`。
 
