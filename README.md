@@ -41,7 +41,8 @@ $ npm install @solana/web3.js@1.95.4
 1. [监听钱包](./example-01-subWallet/)
 2. [监听raydium v4新流动池创建](./example-02-subNewPool/)
 3. [监听raydium clmm代币的实时价格](./example-03-subPrice/)
-4. 
+4. [获取代币持有比例](./example-04-analysisToken/)
+5. 
 
 ## 参考
 
