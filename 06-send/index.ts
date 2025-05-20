@@ -14,7 +14,7 @@ const connection = new Connection("https://api.mainnet-beta.solana.com", "confir
 
 // 本地导入钱包
 // const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("wallet.json")));
-const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("web3xFMwEPrc92NeeXdAigni95NDnnd2NPuajTirao2.json")));
+const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("web3xFMwEPrc92NeeXdAigni95NDnnd2NPuajTirao2.json").toString()));
 const fromWallet = Keypair.fromSecretKey(fromSecretKey);
 
 async function main() {
@@ -48,24 +48,24 @@ async function main() {
     });
     console.log(`交易已发送: https://solscan.io/tx/${signature}`);
 
-    // const { blockhash } = await connection.getLatestBlockhash();
-    // transaction.recentBlockhash = blockhash;
-    // transaction.feePayer = fromWallet.publicKey;
-    // transaction.sign(fromWallet);
-    // const rawTransaction = transaction.serialize();
+    const { blockhash } = await connection.getLatestBlockhash();
+    transaction.recentBlockhash = blockhash;
+    transaction.feePayer = fromWallet.publicKey;
+    transaction.sign(fromWallet);
+    const rawTransaction = transaction.serialize();
 
     // 2. sendRawTransaction
-    // const signature = await connection.sendRawTransaction(rawTransaction, { 
-    //     skipPreflight: false 
-    // })
-    // console.log("交易签名：", signature)
+    const signature2 = await connection.sendRawTransaction(rawTransaction, { 
+        skipPreflight: false 
+    })
+    console.log("交易签名：", signature2)
     
     // 3. sendEncodedTransaction
-    // const base64Transaction = rawTransaction.toString('base64');
-    // const signature = await connection.sendEncodedTransaction(base64Transaction, { 
-    //     skipPreflight: false 
-    // });
-    // console.log("交易签名：", signature)
+    const base64Transaction = rawTransaction.toString('base64');
+    const signature3 = await connection.sendEncodedTransaction(base64Transaction, { 
+        skipPreflight: false 
+    });
+    console.log("交易签名：", signature3)
     
 }
 

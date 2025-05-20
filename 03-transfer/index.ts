@@ -13,7 +13,7 @@ const connection = new Connection("https://api.mainnet-beta.solana.com", "confir
 // const connection = new Connection("https://mainnet-ams.chainbuff.com", "confirmed");
 
 // 本地导入钱包
-const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("wallet.json")));
+const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("wallet.json").toString()));
 // const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("web3xFMwEPrc92NeeXdAigni95NDnnd2NPuajTirao2.json")));
 const fromWallet = Keypair.fromSecretKey(fromSecretKey);
 
