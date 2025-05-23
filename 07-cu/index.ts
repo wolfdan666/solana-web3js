@@ -15,7 +15,7 @@ const connection = new Connection("https://api.mainnet-beta.solana.com", "confir
 
 // 本地导入钱包
 // const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("wallet.json")));
-const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("web3xFMwEPrc92NeeXdAigni95NDnnd2NPuajTirao2.json")));
+const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("web3xFMwEPrc92NeeXdAigni95NDnnd2NPuajTirao2.json").toString()));
 const fromWallet = Keypair.fromSecretKey(fromSecretKey);
 
 async function main() {

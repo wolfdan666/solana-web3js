@@ -123,3 +123,20 @@
   - 6xBTJa2VzLUnZnSPbvaTNKGYMoxG4Pm3d6B6nsPVbWUU
 
 ```
+
+
+> NOTICE: 运行时 `npx esrun example-04-analysisToken/index.ts` 有可能主网 RPC 报错如下:
+> 
+> ```bash
+> /root/code/solana-web3js/node_modules/@solana/web3.js/src/connection.ts:1698
+>         callback(new Error(`${res.status} ${res.statusText}: ${text}`));
+>                  ^
+> 
+> 
+> Error: 410 Gone:  {"jsonrpc":"2.0","error":{"code": 410, "message":"The RPC call or parameters have been disabled"}, "id": "e93680da-e2fe-4d28-95d1-6bf3e392257d" } 
+> 
+>     at ClientBrowser.callServer (/root/code/solana-web3js/node_modules/@solana/web3.js/src/connection.ts:1698:18)
+>     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+> ```
+> 
+> 改用注册的 RPC 就行，比如: `https://rpc.shyft.to?api_key=xxxxxxx`

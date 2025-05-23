@@ -15,7 +15,7 @@ const connection = new Connection("https://api.mainnet-beta.solana.com", "confir
 
 // 本地导入钱包
 // const fromSecretKey = Uint8Array.from(JSON.parse(fs.readFileSync("wallet.json")));
-const secretKey = Uint8Array.from(JSON.parse(fs.readFileSync("web3xFMwEPrc92NeeXdAigni95NDnnd2NPuajTirao2.json")));
+const secretKey = Uint8Array.from(JSON.parse(fs.readFileSync("web3xFMwEPrc92NeeXdAigni95NDnnd2NPuajTirao2.json").toString()));
 const payer = Keypair.fromSecretKey(secretKey);
 
 async function createALT() {
@@ -99,7 +99,7 @@ async function transfer() {
     // 获取ALT
     const ALT = await connection.getAddressLookupTable(lookupTableAddress);
     const lookupTableAccount = ALT.value;
-    if (!ALT.value) {
+    if (!lookupTableAccount) {
         throw new Error("lookupTableAccount不存在");
     }
     console.log('lookupTableAccount:', lookupTableAccount)

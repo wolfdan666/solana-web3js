@@ -1,6 +1,7 @@
 import { Connection, PublicKey, ParsedAccountData } from "@solana/web3.js";
 
-const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
+// const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
+const connection = new Connection("https://rpc.shyft.to\?api_key\=jJ4tElxeAslcatkd", "confirmed");
 
 async function getTokenHolders(mintAddress: string) {
     // 1. 参数说明：mintAddress 是代币的 Mint 地址
@@ -106,7 +107,7 @@ async function getTokenDistribution(holders: any[]) {
             console.log(`平均持仓: ${(Number(d.totalAmount)/Number(d.holders)).toFixed(2)}`);
             
             // 只显示前5个大户地址
-            if (d.addresses.length > 0) {
+            if (d.addresses.length >= 5) {
                 console.log("主要持有者: ");
                 d.addresses.slice(0, 5).forEach(addr => 
                     console.log(`  - ${addr}`)

@@ -371,3 +371,64 @@ parseTx()
 ```
 已解析的v0交易: {"blockTime":1731742689,"meta":{"computeUnitsConsumed":150,"err":null,"fee":5000,"innerInstructions":[],"logMessages":["Program 11111111111111111111111111111111 invoke [1]","Program 11111111111111111111111111111111 success"],"postBalances":[5770640,1,2018400],"postTokenBalances":[],"preBalances":[5776640,1,2017400],"preTokenBalances":[],"rewards":[],"status":{"Ok":null}},"slot":301701368,"transaction":{"message":{"accountKeys":[{"pubkey":"web3xFMwEPrc92NeeXdAigni95NDnnd2NPuajTirao2","signer":true,"source":"transaction","writable":true},{"pubkey":"11111111111111111111111111111111","signer":false,"source":"transaction","writable":false},{"pubkey":"buffaAJKmNLao65TDTUGq8oB9HgxkfPLGqPMFQapotJ","signer":false,"source":"lookupTable","writable":true}],"addressTableLookups":[{"accountKey":"2qqXrZZSG9naivqMyWHHUDRFVNh3YthsTbN5EPU8Poo5","readonlyIndexes":[],"writableIndexes":[1]}],"instructions":[{"parsed":{"info":{"destination":"buffaAJKmNLao65TDTUGq8oB9HgxkfPLGqPMFQapotJ","lamports":1000,"source":"web3xFMwEPrc92NeeXdAigni95NDnnd2NPuajTirao2"},"type":"transfer"},"program":"system","programId":"11111111111111111111111111111111","stackHeight":null}],"recentBlockhash":"DcQMezPzouNnbrHufbhrpjFftMxVpDKX4vwCGc2NQHKZ"},"signatures":["4LwygRtiF9ZCrbGKoh8MEzmxowaRHPaDc1nsinkv72uXU2cUCuZ8YskBBgsvbBEMZ5Pqpf6C6WcXtCkqAuLZand1"]},"version":0}
 ```
+
+## QA
+
+这里的查找表地址在转账交易中有什么作用，compileToV0Message不带参数和带查找表参数有啥区别吗
+
+> 让我来解释一下地址查找表(Address Lookup Table, ALT)的作用和区别：
+> 
+> 1. 地址查找表的主要作用：
+> - 在传统(legacy)交易中，一个交易最多只能包含35个账户地址
+> - 使用地址查找表后，可以将账户数量限制提升到64个
+> - 查找表本质上是一个存储账户地址的列表，可以在交易中引用这些地址，而不需要直接在交易中包含它们
+> 
+> 2. `compileToV0Message` 带参数和不带参数的区别：
+> 
+> 让我们看一个具体的例子：
+> 
+> ```typescript
+> // 不带查找表参数
+> const messageV0 = new TransactionMessage({
+>     payerKey: payer.publicKey,
+>     recentBlockhash: blockhash,
+>     instructions: [instruction],
+> }).compileToV0Message();
+> 
+> // 带查找表参数
+> const messageV0 = new TransactionMessage({
+>     payerKey: payer.publicKey,
+>     recentBlockhash: blockhash,
+>     instructions: [instruction],
+> }).compileToV0Message([lookupTableAccount]);
+> ```
+> 
+> 主要区别在于：
+> 
+> 1. 不带参数时：
+> - 所有账户地址都会直接包含在交易消息中
+> - 每个账户地址都会占用交易消息的空间
+> - 适合账户数量较少的情况
+> 
+> 2. 带查找表参数时：
+> - 交易消息中只包含查找表的引用
+> - 实际的账户地址存储在链上的查找表中
+> - 可以大大减少交易消息的大小
+> - 适合需要引用多个账户地址的场景
+> 
+> 从代码示例中可以看到，当使用查找表时，交易消息中的账户地址会显示为：
+> ```json
+> "addressTableLookups": [{
+>     "accountKey": "2qqXrZZSG9naivqMyWHHUDRFVNh3YthsTbN5EPU8Poo5",
+>     "readonlyIndexes": [],
+>     "writableIndexes": [1]
+> }]
+> ```
+> 
+> 这表示交易引用了查找表中的地址，而不是直接包含这些地址。这种方式可以：
+> 1. 减少交易消息的大小
+> 2. 提高交易效率
+> 3. 允许在单个交易中引用更多账户
+> 
+> 在示例代码中，虽然只进行了一个简单的转账操作，但使用查找表展示了如何构建更复杂的交易，这些交易可能需要引用多个账户地址。
+> 
